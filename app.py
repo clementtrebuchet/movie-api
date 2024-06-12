@@ -1,6 +1,3 @@
-import matplotlib
-matplotlib.use('Agg')
-
 from flask import Flask, send_file, make_response
 
 import csv
