@@ -1,55 +1,133 @@
-# Application structure
+# Movie API
 
-```
-movie_api/
+## Overview
+
+This application provides a RESTful API to load and export movie data. The data can be loaded from CSV or XLSX files and exported in the same formats.
+
+## Project Structure
+
+```bash
+movie-api/
+│
 ├── app.py
+├── IMDBMovies2000-2020.csv
+├── IMDBMovies2000-2020.xlsx
 ├── config.py
+├── requirements.txt
 ├── migrations/
-│   └── ...
-├── models.py (optional, if you separate your models)
-└── ...
+│   └── ... (migration files)
+├── instance/
+│   └── movie.db
+├── tests/
+│   └── test_app.py
+│   └── test_data.csv
+├── init-db.sh
+└── README.md
+```
+## Requirements
+
+- Python 3.x
+- Flask
+- pandas
+- Flask-Migrate
+- Flask-SQLAlchemy
+- pytest
+
+## Setup
+
+1. **Clone the repository:**
+
+    ```bash
+    git clone <repository_url>
+    cd <repository_directory>
+    ```
+
+2. **Create a virtual environment and activate it:**
+
+    ```bash
+    python -m venv venv
+    source venv/bin/activate   # On Windows use `venv\Scripts\activate`
+    ```
+
+3. **Install required packages:**
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. **Initialize the migration environment and create the database:**
+
+    Run the following script to set up the database:
+
+    ```bash
+    ./init-db.sh
+    ```
+
+5. **Run the application:**
+
+    ```bash
+    python app.py
+    ```
+
+## API Endpoints
+
+### Load Data
+
+- **Endpoint:** `/load-data`
+- **Method:** `POST`
+- **Description:** Load data from a CSV or XLSX file.
+- **Example:**
+
+    ```bash
+    curl -F 'file=@IMDBMovies2000-2020.csv' http://127.0.0.1:5000/load-data
+    ```
+
+### Export Data
+
+- **Endpoint:** `/export-data`
+- **Method:** `GET`
+- **Description:** Export data to a CSV or XLSX file.
+- **Parameters:**
+    - `format`: Specify the export format (`csv` or `xlsx`). Default is `csv`.
+- **Example:**
+
+    ```bash
+    curl http://127.0.0.1:5000/export-data?format=csv -o exported_data.csv
+    ```
+
+## Running Tests
+
+1. **Ensure you have the required dependencies installed:**
+
+    ```bash
+    pip install pytest
+    ```
+
+2. **Run the tests:**
+
+    ```bash
+    pytest
+    ```
+
+## Bash Script for Database Initialization
+
+A bash script named `init-db.sh` initialize the database:
+
+### `init-db.sh`
+
+```bash
+#!/usr/bin/env bash
+flask db init
+flask db migrate -m "Initial migration."
+flask db upgrade
 ```
 
+### Summary
 
-# Running the Flask Application
-To run the Flask application, follow these steps:
-
-Set the Flask app environment variable:
-`export FLASK_APP=app.py`
-
-Start the Flask development server:
-`flask run`
-
-Open a web browser and navigate to http://localhost:5000 to access the application.
-
-# Running Pytest
-To run Pytest and execute the tests for the Flask application, follow these steps:
-
-Ensure you have installed the project dependencies as mentioned in the setup section.
-
-Make sure you are in the project directory.
-
-Run the Pytest command:
-`pytest`
-
-Pytest will automatically discover the tests located in the project directory and its subdirectories and execute them.
-
-# To create a SQLite database, you can follow these steps:
-
-Open a terminal window. You can find the Terminal application in the Utilities folder within the Applications folder.
-Navigate to the directory where you want to create the SQLite database file. For example, if you want to create the database 
-file in your home directory, use the following command:
-`cd ~`
-
-Launch the SQLite shell by running the following command:
-`sqlite3 database.db`
-
-Replace database.db with the name you want to give to your SQLite database file. This command will create a new SQLite database file with the specified name in the current directory.
-
-Once you run the command, you will enter the SQLite shell prompt, indicated by 
-`sqlite>`. 
-
-# Initialize Database Migrations:
-`flask db init`
-`flask db migrate -m "Initial migration"`
-`flask db upgrade`
+1. **Clone the repository** and navigate to the project directory.
+2. **Create a virtual environment** and activate it.
+3. **Install required packages** using `pip install -r requirements.txt`.
+4. **Initialize the database** by running the `init-db.sh` script.
+5. **Run the application** using `python app.py`.
+6. **Use the API** to load and export data.
+7. **Run tests** using `pytest` to ensure everything is working correctly.

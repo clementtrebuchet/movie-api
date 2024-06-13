@@ -1,0 +1,6 @@
+openpyxl
+pandas
+flask
+flask-sqlalchemy
+flask-migrate
+pytest
