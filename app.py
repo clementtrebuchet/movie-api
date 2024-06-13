@@ -56,7 +56,7 @@ def load_data_endpoint():
             df = pd.read_csv(file)
         else:
             df = pd.read_excel(file)
-
+        print(df.info)
         for index, row in df.iterrows():
             director_name = row.get("director", None)
             if director_name and isinstance(director_name, str):
