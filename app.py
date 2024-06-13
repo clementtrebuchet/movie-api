@@ -65,16 +65,17 @@ def load_data_endpoint():
                     director = Director(Name=director_name)
                     db.session.add(director)
                     db.session.commit()
-
-            movie = Movie(
-                Title=row["title"],
-                ReleaseYear=row["year"],
-                Genre=row["genre"],
-                Rating=row["avg_vote"] if isinstance(row["avg_vote"], float) else 0.0,
-                DirectorID=director.DirectorID if director_name else None,
-            )
-            db.session.add(movie)
-            db.session.commit()
+            movie = Movie.query.filter_by(Title=row["title"]).first()
+            if not movie:
+                movie = Movie(
+                    Title=row["title"],
+                    ReleaseYear=row["year"],
+                    Genre=row["genre"],
+                    Rating=row["avg_vote"] if isinstance(row["avg_vote"], float) else 0.0,
+                    DirectorID=director.DirectorID if director_name else None,
+                )
+                db.session.add(movie)
+                db.session.commit()
 
             actors = row.get("actors", "")
             if isinstance(actors, str):
